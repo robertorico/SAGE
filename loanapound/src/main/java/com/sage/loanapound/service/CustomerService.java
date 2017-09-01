@@ -24,10 +24,11 @@ public class CustomerService{
 	/** The Constant LOGGER. */
 	private static final Log LOGGER = LogFactory.getLog(CustomerService.class);
 	
+
 	/**
 	 * Adds the.
 	 *
-	 * @param dto the dto
+	 * @param entity the entity
 	 */
 	public void add(Customer entity){
 		LOGGER.info("Calling to add(" + entity + ")");

@@ -34,7 +34,7 @@ public class ScoreService extends ProviderScoreHelper {
 	public LoanCustomer setScore(LoanCustomer loanCustomer) {
 		LOGGER.info("Start - setScore(" + loanCustomer + ")");
 
-		try {
+		try {				
 			if (loanCustomer.getAmount() < 2000)
 				loanCustomer = getScoreFromProvider1(loanCustomer);
 			else if (loanCustomer.getAmount() < 6000)
@@ -42,7 +42,8 @@ public class ScoreService extends ProviderScoreHelper {
 			else
 				loanCustomer = getBestProviderScore(loanCustomer);
 		} catch (Exception e) {
-			loanCustomer.setStatus(ErrorConstants.ERROR_GETTING_SCORE);
+			LOGGER.error("setScore - Error: " + e.toString());
+			loanCustomer.setStatus(ErrorConstants.ERROR_GETTING_SCORE);		
 		}
 
 		LOGGER.info("End - setScore() - Result: " + loanCustomer);

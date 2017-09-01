@@ -2,6 +2,8 @@ package com.sage.loanapound.dto;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.Min;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.modelmapper.ModelMapper;
 
@@ -25,10 +27,12 @@ public class LoanCustomerDto {
 
 	/** The amount. */
 	@NotEmpty
+	@Min(value=1)
 	private double amount;
 
 	/** The month. */
 	@NotEmpty
+	@Min(value=1)
 	private int months;
 
 	/** The start date. */

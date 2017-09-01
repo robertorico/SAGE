@@ -1,12 +1,13 @@
-package com.sage.loanapound.wsclient;
+package com.sage.loanapound.ws.soap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
 import com.sage.loanapound.entity.Customer;
-import com.sage.loanapound.wsclient.model.ScoreRequest;
-import com.sage.loanapound.wsclient.model.ScoreResponse;
+
+import wsdl.classes.ScoreRequest;
+import wsdl.classes.ScoreResponse;
 
 /**
  * The Class ProviderSoap.
@@ -21,23 +22,21 @@ public class ProviderSoap extends WebServiceGatewaySupport {
 	 *
 	 * @param customer the customer
 	 * @return the score
+	 * @throws Exception 
 	 */
 	public ScoreResponse getScore(Customer customer) {
 		LOGGER.info("Start - getScore(" + customer + ")");
-
+		
 		ScoreRequest request = new ScoreRequest();
 		request.setPassport(customer.getId());
 		request.setName(customer.getName());
 		request.setLastName(customer.getSurname());
 
-		LOGGER.info("Requesting score for " + request);
 		ScoreResponse response = null; 
-		try{
-			response = (ScoreResponse) getWebServiceTemplate()
-					.marshalSendAndReceive(request);
-		}catch(Exception e){
-			System.out.println(e.toString());
-		}
+		
+		response = (ScoreResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(request);
+	
 		LOGGER.info("End - getScore() - Result: " + response);
 		return response;
 	}

@@ -13,16 +13,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.client.RestTemplate;
 
-import com.sage.loanapound.configuration.SoapClientConfig;
 import com.sage.loanapound.constant.ErrorConstants;
 import com.sage.loanapound.entity.Customer;
 import com.sage.loanapound.entity.LoanCustomer;
 import com.sage.loanapound.entity.ProviderScore;
 import com.sage.loanapound.service.ProviderScoreService;
-import com.sage.loanapound.wsclient.ProviderSoap;
-import com.sage.loanapound.wsclient.model.RequestProviderRest;
-import com.sage.loanapound.wsclient.model.ResponseProviderRest;
-import com.sage.loanapound.wsclient.model.ScoreResponse;
+import com.sage.loanapound.ws.configuration.SoapClientConfig;
+import com.sage.loanapound.ws.model.RequestProviderRest;
+import com.sage.loanapound.ws.model.ResponseProviderRest;
+import com.sage.loanapound.ws.soap.ProviderSoap;
+
+import wsdl.classes.ScoreResponse;
 
 /**
  * The Class ProviderScoreHelper.
@@ -44,8 +45,9 @@ public class ProviderScoreHelper {
 	 * @param loanCustomer
 	 *            the loan customer
 	 * @return the score from provider 1
+	 * @throws Exception 
 	 */
-	protected LoanCustomer getScoreFromProvider1(LoanCustomer loanCustomer) {
+	protected LoanCustomer getScoreFromProvider1(LoanCustomer loanCustomer) throws Exception {
 		LOGGER.info("Start - getScoreFromProvider1(" + loanCustomer + ")");
 		
 		loanCustomer.setProvider(providerScoreService.findByName("provider1"));
@@ -61,8 +63,9 @@ public class ProviderScoreHelper {
 	 * @param loanCustomer
 	 *            the loan customer
 	 * @return the score from provider 2
+	 * @throws Exception 
 	 */
-	protected LoanCustomer getScoreFromProvider2(LoanCustomer loanCustomer) {
+	protected LoanCustomer getScoreFromProvider2(LoanCustomer loanCustomer) throws Exception {
 		LOGGER.info("Start - getScoreFromProvider2(" + loanCustomer + ")");
 		
 		loanCustomer.setProvider(providerScoreService.findByName("provider2"));
@@ -78,15 +81,18 @@ public class ProviderScoreHelper {
 	 * @param loanCustomer
 	 *            the loan customer
 	 * @return the best provider score
+	 * @throws Exception 
 	 */
-	protected LoanCustomer getBestProviderScore(LoanCustomer loanCustomer) {
+	protected LoanCustomer getBestProviderScore(LoanCustomer loanCustomer) throws Exception {
 		LOGGER.info("Start - getBestProviderScore(" + loanCustomer + ")");
 
+	
 		// Get Scores of all providers
 		List<LoanCustomer> listLC = getAllScore(loanCustomer);
-
 		// Orders to Score
 		listLC.sort(Comparator.comparing(LoanCustomer::getScore).reversed());
+		
+	
 
 		LOGGER.info("End - getBestProviderScore() - Return: " + listLC.get(0));
 		return listLC.get(0);
@@ -98,9 +104,10 @@ public class ProviderScoreHelper {
 	 * @param loanCustomer
 	 *            the loan customer
 	 * @return the all score
+	 * @throws Exception 
 	 */
-	private List<LoanCustomer> getAllScore(LoanCustomer loanCustomer) {
-		LOGGER.info("Start - getScoreFromProvider(" + loanCustomer + ")");
+	private List<LoanCustomer> getAllScore(LoanCustomer loanCustomer) throws Exception {
+		LOGGER.info("Start - getAllScore(" + loanCustomer + ")");
 
 		List<LoanCustomer> listWithProviderScore = new ArrayList<>();
 		LoanCustomer lCustomer;
@@ -123,7 +130,7 @@ public class ProviderScoreHelper {
 
 			listWithProviderScore.add(lCustomer);
 		}
-		LOGGER.info("End - getScoreFromProvider() - Return: " + listWithProviderScore);
+		LOGGER.info("End - getAllScore() - Return: " + listWithProviderScore);
 		return listWithProviderScore;
 	}
 
@@ -135,32 +142,44 @@ public class ProviderScoreHelper {
 	 * @param provider
 	 *            the provider
 	 * @return the score from provider
+	 * @throws Exception 
 	 */
-	private int getScoreFromProvider(Customer customer, String provider) {
+	private int getScoreFromProvider(Customer customer, String provider) throws Exception {
 		LOGGER.info("Start - getScoreFromProvider(" + customer + ", provider=" + provider + ")");
 
 		Integer score = null;
 
 		switch (provider) {
 			case "provider1":
-				AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-				ctx.register(SoapClientConfig.class);
-				ctx.refresh();
-				ProviderSoap provider1 = ctx.getBean(ProviderSoap.class);
-				ScoreResponse response = provider1.getScore(customer);
-				score = response.getScore();
-				break;
+				try(AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext()){
+					ctx.register(SoapClientConfig.class);
+					ctx.refresh();
+					ProviderSoap provider1 = ctx.getBean(ProviderSoap.class);
+					ScoreResponse response = provider1.getScore(customer);
+					score = response.getScore();
+				}catch(Exception e){
+					LOGGER.error("getScoreFromProvider - " + e.toString());
+					throw new Exception("Error calling WS \"Provider1\" ");
+				}
+			break;
+				
 			case "provider2":
-				RestTemplate restTemplate = new RestTemplate();
-				RequestProviderRest request = new RequestProviderRest(customer.getId(), customer.getName(),
-						customer.getSurname());
-				ResponseProviderRest res = restTemplate.postForObject("http://localhost:82/getScore/", request,
-						ResponseProviderRest.class);
-				score = res.getScore();
-				break;
+				try{
+					RequestProviderRest request = new RequestProviderRest(customer.getId(), customer.getName(),
+							customer.getSurname());
+					ResponseProviderRest res = new RestTemplate().postForObject("http://localhost:82/getScore/", request,
+							ResponseProviderRest.class);
+					score = res.getScore();
+					
+				}catch(Exception e){
+					LOGGER.error("getScoreFromProvider - " + e.toString());
+					throw new Exception("Error calling WS \"Provider2\" ");
+				}
+			break;
 		}
 
 		LOGGER.info("End - getScoreFromProvider() - Return: Score = " + score);
 		return score;
 	}
+	
 }

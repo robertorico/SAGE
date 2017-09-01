@@ -1,4 +1,4 @@
-package com.sage.loanapound.wsclient.model;
+package com.sage.loanapound.ws.model;
 
 // TODO: Auto-generated Javadoc
 /**

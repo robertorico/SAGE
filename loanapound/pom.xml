@@ -74,10 +74,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
-<!--         <dependency> -->
-<!--             <groupId>com.fasterxml.jackson.core</groupId> -->
-<!--             <artifactId>jackson-databind</artifactId> -->
-<!--         </dependency> -->
         
 <!--         entity to dto -->
         <dependency>
@@ -85,7 +81,13 @@
 		  	<artifactId>modelmapper</artifactId>
 		  	<version>1.1.0</version>
 		</dependency>
-	</dependencies>
+
+	
+		<dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+  	</dependencies>
 
 	<build>
 <!-- 	<pluginManagement> -->
@@ -95,7 +97,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<dependencies>
-<!-- 				Refres html -->
+<!-- 				Refresh html -->
 					<dependency>
 					    <groupId>org.springframework</groupId>
 					    <artifactId>springloaded</artifactId>

@@ -26,29 +26,7 @@ public class LoanapoundApplication {
 
 	
 		
-//	@Bean
-//	CommandLineRunner lookup(Company1Soap scoreClient) {
-//		return args -> {
-//			String name = "Pepe";
-//
-//			GetScoreResponse response = scoreClient.getScore(name);
-//			System.err.println("El score para " + name + " es: " + response.getScore());
-//		};
-//	}
-//	
-//	@Bean
-//	public RestTemplate restTemplate(RestTemplateBuilder builder) {
-//		return builder.build();
-//	}
-//
-//	@Bean
-//	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
-//		return args -> {
-//			Integer quote = restTemplate.getForObject(
-//					"http://localhost:83/score?idcard=12", Integer.class);
-//			LOGGER.info("LA OPERACIÓN REST DEVUELVE: " + quote.toString());
-//		};
-//	}
+
 
 	
 }

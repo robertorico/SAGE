@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.modelmapper.ModelMapper;
@@ -42,11 +44,13 @@ public class LoanCustomer implements Cloneable {
 
 	/** The amount. */
 	@NotNull
+	@Min(value=0)
 	@Column(name = "amount")
 	private Double amount;
 
 	/** The months. */
 	@NotNull
+	@Min(value=1)
 	@Column(name = "months")
 	private int months;
 
@@ -72,6 +76,8 @@ public class LoanCustomer implements Cloneable {
 
 	/** The score. */
 	@NotNull
+	@Min(value=1)
+	@Max(value=100)
 	@Column(name = "score")
 	private int score;
 
