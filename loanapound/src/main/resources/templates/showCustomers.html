@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="EN">
+  <head>
+    <meta charset="utf-8"/>
+
+    <title>MAIN PAGE</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>			
+<!--   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+ 
+  </head>
+
+  <body>
+
+ 	<div class="jumbotron container" align="center">
+		<h1>Customers </h1>	  			
+		<table class="table panel panel-default">
+			<thead>
+				<tr>									
+					<th>Passport</th>
+					<th>Name</th>
+					<th>Birthday</th>
+					<th>E-mail</th>
+					<th>Phone</th>
+					<th>Address</th>
+					<th>Country</th>
+					<th>Postal Code</th>		
+					<th>Loan Type</th>	
+					<th>Amount</th>		
+					<th>Months</th>	
+					<th>Provider</th>
+					<th>Score</th>
+					<th>Status</th>												
+				</tr>
+				
+			</thead>
+			<tbody th:each="llc : ${listLoanCustomers}">
+				<tr>
+					<td th:text="${llc.customer.id}"></td>
+					<td><span th:text="${llc.customer.name}"></span>  <span th:text="${llc.customer.surname}"></span></td>
+					<td th:text="${llc.customer.birthday}"></td>
+					<td th:text="${llc.customer.email}"></td>
+					<td th:text="${llc.customer.phone}"></td>
+					<td><span th:text="${llc.customer.number}"></span>  <span th:text="${llc.customer.street}"></span></td>
+					<td th:text="${llc.customer.country}"></td>
+					<td th:text="${llc.customer.postalcode}"></td>
+					<td th:text="${llc.loan.type}"></td>
+					<td th:text="${llc.amount}"></td>
+					<td th:text="${llc.months}"></td>
+					<td th:text="${llc.provider.name}"></td>
+					<td th:text="${llc.score}"></td>
+					<td th:text="${llc.status}"></td>				
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div align="center">
+		<a href="#" th:href="@{/lap}">
+			<button class="btn btn-lg btn-primary btn-start" type="submit">
+				 New Loan
+			</button>
+		</a>
+	</div>
+	
+	
+</body>
+</html>

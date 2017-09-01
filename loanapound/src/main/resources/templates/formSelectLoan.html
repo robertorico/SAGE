@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="EN">
+	<head>
+		<title>Add Customer</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+		
+		<style>
+			.rojo{
+				color:red
+			}
+			input[type=range] {
+			    display: inline; 
+			    width: 80%;
+			}
+			.rangeLabel{
+			    padding-left: 5px;
+			    top: -6px;
+			    position: relative;
+			}
+		</style>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+	</head>
+	<body>
+		<div class="jumbotron container">
+			<h2 align="center">Loan Configuration</h2>
+			<br/>
+			
+			<form action="#" th:action="@{/lap/selectLoan}" th:object="${loanCustomer}" method="post">
+				<div align="center" th:if="${error == 1}" class="alert alert-danger" role="alert">Check range values</div>
+				<div align="center" th:if="${error == 2}" class="alert alert-danger" role="alert">Select type of loan</div>
+
+	
+			  	<div>
+			  		<!--
+					<p>AMOUNT => min: <span th:id="amountMin" th:text="${amountMin}"></span> - max: <span th:id="amountMax" th:text="${amountMax}"></span>					
+					<input id="amount" type="number" th:field="*{amount}" class="form-control"/></p>
+					<p>MONTHS => min: <span th:id="monthMin" th:text="${monthMin}"></span> - max: <span th:id="monthMax" th:text="${monthMax}"></span>
+					<input id="months" type="number" th:field="*{months}" class="form-control"/></p> -->
+					<div>
+						<h5>Type of loan:</h5>
+						<select>
+						  <option th:each="type : ${listTypeLoan}" th:id="typeLoan" th:name="${type}" th:value="${*loan.type}"  th:text="${type}" ></option>
+<!-- th:onselect="'selectList(\'' + ${type} + '\');'" -->
+						</select>	
+					</div>
+					<div>
+					
+						<h5>Amount:</h5> 
+						<div>
+							<input th:field="*{amount}" id="amountRange" type="range" min="1000" max="10000" step="1000" name="amountRange" onchange="updateRangeInputText('amountLabel',this.value);"/> 
+							<span class="rangeLabel">GBP</span> <label id="amountLabel"></label> 
+						</div>
+					</div>
+
+					<div>
+						<h5>Months:</h5> 
+						<div>
+<!-- 							<input type="range" min="12" max="48" step="12" name="monthRange" onchange="updateRangeInputText('monthsLabel',this.value);"/> -->
+							<input th:field="*{months}" id="monthsRange" type="range" min="12" max="48" step="12" name="monthRange" onchange="updateRangeInputText('monthsLabel',this.value);"/>
+							<label class="rangeLabel" id="monthsLabel"></label>
+						</div>
+					</div>
+				</div>		
+					
+				
+				<button  type="submit" class="btn btn-lg btn-primary btn-block"> 
+					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Submit 
+				</button> 
+				
+				
+			</form>
+			
+			
+		</div>
+
+		<script th:inline="javascript" type="text/javascript">
+		
+			function selectList(val) {
+				alert(val);
+			}
+			function updateRangeInputText(id,val) {
+				document.getElementById(id).innerHTML = val; 
+				alert(val);
+        	}
+			
+			
+			
+// 				var minAmo = 10000;
+// 				var maxAmo = 0;
+			
+// 				for(var x in ${listLoans}){
+// 					if(x.type == val){
+// 						alert(val);
+// 						if(minAmo > x.amountMin){
+// 							minAmo = x.amountMin;
+// 						}
+// 					}
+					
+						
+
+
+
+
+					
+// 				}
+				
+// 				var input = document.getElementById("amountRange");
+// 				input.min = minAmo;
+// 				input.max = maxAmo;
+// 			}
+				
+				
+        	
+        </script>
+	
+	</body>
+</html>

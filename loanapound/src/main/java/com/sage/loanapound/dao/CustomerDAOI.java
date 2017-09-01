@@ -1,0 +1,16 @@
+package com.sage.loanapound.dao;
+
+import java.io.Serializable;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.sage.loanapound.entity.Customer;
+
+/**
+ * The Interface CustomerDAOI.
+ */
+@Repository("customerDAOI")
+public interface CustomerDAOI extends JpaRepository<Customer, Serializable>{
+
+}

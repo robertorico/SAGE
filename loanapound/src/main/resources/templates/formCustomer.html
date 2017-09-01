@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="EN">
+	<head>
+		<title>Add Customer</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+		
+		<style>
+			.red{
+				color:red
+			}
+		</style>
+	</head>
+	<body>
+		<div class="jumbotron container">
+			<h1 align="center">Customer Form</h1>
+			<br/>
+			
+			<form action="#" th:action="@{/lap/addCustomer}" th:object="${customer}" method="post">
+			
+				<p>ID/Passport: <input type="text" th:field="*{id}" th:value="*{id}" class="form-control"/></p>
+				<p class="red" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">ID Card has error </p>		
+				
+				<p>Name: <input type="text" th:field="*{name}" th:value="*{name}" class="form-control"/></p>
+				<p class="red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name has error </p>		
+		
+				<p>Lastname: <input type="text" th:field="*{surname}" th:value="*{surname}" class="form-control"/></p>
+				<p class="red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Lastname has error </p>		
+				
+				<p>Birthday <input type="date" th:field="*{birthday}" th:value="*{birthday}"  class="form-control"/></p>
+				<p class="red" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">Birthday has error </p>		
+						
+				<p>E-mail: <input type="email" th:field="*{email}" th:value="*{email}" class="form-control"/></p>
+				<p class="red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email has error </p>		
+				
+				<p>Phone: <input type="tel" th:field="*{phone}" th:value="*{phone}" class="form-control"/></p>
+				<p class="red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone has error </p>		
+				
+				<p>Street Number: <input type="text" th:field="*{number}" th:value="*{number}" class="form-control"/></p>
+				<p class="red" th:if="${#fields.hasErrors('number')}" th:errors="*{number}">Number has error </p>		
+				
+				<p>Street Name: <input type="text" th:field="*{street}" th:value="*{street}" class="form-control"/></p>
+				<p class="red" th:if="${#fields.hasErrors('street')}" th:errors="*{street}">Street has error </p>		
+				
+				<p>Country: <input type="text" th:field="*{country}" th:value="*{country}" class="form-control"/></p>
+				<p class="red" th:if="${#fields.hasErrors('country')}" th:errors="*{country}">Country has error </p>		
+							
+				<p>Postal code: <input type="text" th:field="*{postalcode}" th:value="*{postalcode}" class="form-control"/></p>
+				<p class="red" th:if="${#fields.hasErrors('postalcode')}" th:errors="*{postalcode}">Postal code has error </p>		
+				
+				<button  type="submit" class="btn btn-lg btn-primary btn-block"> 
+					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Submit 
+				</button> 
+			</form>
+		</div>
+	</body>
+</html>
