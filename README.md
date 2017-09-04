@@ -15,7 +15,7 @@ Loan a Pound
 	Finally a page with all loan request and the status about the loan is displayed.
 	
 2. Install instructions
-	1. Create the data base with MySQL, for that execute the script "script create DB with datas.sql"
+	1. Create the data base with MySQL, for that execute the script "script create DB with data.sql"
 	2. In eclipse import the projects 'loanapound', 'providerscorerest' 'providerscoresoap' like maven project.
 	3. Run all projects
 	4. Execute http://localhost:8080/lap
