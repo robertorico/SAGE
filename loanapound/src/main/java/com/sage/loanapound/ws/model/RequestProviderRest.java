@@ -12,8 +12,8 @@ public class RequestProviderRest {
 	/** The name. */
 	private String name;
 
-	/** The surname. */
-	private String surname;
+	/** The lastname. */
+	private String lastname;
 	
 	/**
 	 * Instantiates a new request provider rest.
@@ -25,13 +25,13 @@ public class RequestProviderRest {
 	 *
 	 * @param id the id
 	 * @param name the name
-	 * @param surname the surname
+	 * @param lastname the lastname
 	 */
-	public RequestProviderRest(String id, String name, String surname) {
+	public RequestProviderRest(String id, String name, String lastname) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.surname = surname;
+		this.lastname = lastname;
 	}
 
 	/**
@@ -53,12 +53,12 @@ public class RequestProviderRest {
 	}
 
 	/**
-	 * Gets the surname.
+	 * Gets the lastname.
 	 *
-	 * @return the surname
+	 * @return the lastname
 	 */
-	public String getSurname() {
-		return surname;
+	public String getLastname() {
+		return lastname;
 	}
 
 	/**
@@ -80,11 +80,11 @@ public class RequestProviderRest {
 	}
 
 	/**
-	 * Sets the surname.
+	 * Sets the lastname.
 	 *
-	 * @param surname the surname to set
+	 * @param lastname the lastname to set
 	 */
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 }

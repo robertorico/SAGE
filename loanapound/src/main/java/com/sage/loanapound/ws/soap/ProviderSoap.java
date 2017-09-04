@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
+import com.sage.loanapound.constant.ErrorConstants;
 import com.sage.loanapound.entity.Customer;
 
 import wsdl.classes.ScoreRequest;
@@ -24,21 +25,25 @@ public class ProviderSoap extends WebServiceGatewaySupport {
 	 * @return the score
 	 * @throws Exception 
 	 */
-	public ScoreResponse getScore(Customer customer) {
-		LOGGER.info("Start - getScore(" + customer + ")");
-		
-		ScoreRequest request = new ScoreRequest();
-		request.setPassport(customer.getId());
-		request.setName(customer.getName());
-		request.setLastName(customer.getSurname());
-
-		ScoreResponse response = null; 
-		
-		response = (ScoreResponse) getWebServiceTemplate()
-				.marshalSendAndReceive(request);
+	public ScoreResponse getScore(Customer customer) throws Exception {
+		if(customer != null){
+			LOGGER.info("Start - getScore(" + customer + ")");
+			
+			ScoreRequest request = new ScoreRequest();
+			request.setPassport(customer.getId());
+			request.setName(customer.getName());
+			request.setLastName(customer.getLastname());
 	
-		LOGGER.info("End - getScore() - Result: " + response);
-		return response;
+			ScoreResponse response = null; 
+			
+			response = (ScoreResponse) getWebServiceTemplate()
+					.marshalSendAndReceive(request);
+		
+			LOGGER.info("End - getScore() - Result: " + response);
+			return response;
+		}else{
+			throw new Exception(ErrorConstants.ERROR_CUSTOMER_NULL);
+		}
 	}
 
 }

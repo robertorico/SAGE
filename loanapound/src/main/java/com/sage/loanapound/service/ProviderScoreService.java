@@ -14,6 +14,7 @@ import com.sage.loanapound.entity.ProviderScore;
 /**
  * The Class ProviderScoreService.
  */
+
 @Service("providerScoreService")
 public class ProviderScoreService {
 
@@ -22,8 +23,9 @@ public class ProviderScoreService {
 	@Qualifier("providerScoreDAOI")
 	ProviderScoreDAOI providerScoreDAOI;
 
+	/** The Constant LOGGER. */
 	private static final Log LOGGER = LogFactory.getLog(ProviderScoreService.class);
-
+	
 	/**
 	 * Find all.
 	 *
@@ -42,7 +44,7 @@ public class ProviderScoreService {
 	 * @return the provider score
 	 */
 	public ProviderScore findByName(String name) {
-		LOGGER.info("Calling to findByName(" + name + ")");
+		LOGGER.info("Calling to findByName(name=" + name + ")");
 		return providerScoreDAOI.findByName(name);
 	}
 }

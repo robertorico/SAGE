@@ -1,32 +1,27 @@
 package com.sage.loanapound;
 
+import java.util.Locale;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-//@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 @SpringBootApplication
 @PropertySource({"classpath:application.yml"})
 public class LoanapoundApplication {
 	
-//	private static final Log LOGGER = LogFactory.getLog(LoanapoundApplication.class);
 	
 	public static void main(String[] args) {
 		SpringApplication.run(LoanapoundApplication.class, args);
 	}
-	
-//		
-//	
-//	@Bean
-//	public LocaleResolver localeResolver() {
-//	    SessionLocaleResolver slr = new SessionLocaleResolver();
-//	    slr.setDefaultLocale(Locale.ENGLISH);
-//	    return slr;
-//	}
-
-	
 		
+	@Bean
+	public SessionLocaleResolver localeResolver() {
+	    SessionLocaleResolver slr = new SessionLocaleResolver();
+	    slr.setDefaultLocale(Locale.ENGLISH);
+	    return slr;
+	}
 
-
-	
 }

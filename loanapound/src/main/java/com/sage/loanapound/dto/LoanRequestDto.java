@@ -2,37 +2,28 @@ package com.sage.loanapound.dto;
 
 import java.time.LocalDate;
 
-import javax.validation.constraints.Min;
-
-import org.hibernate.validator.constraints.NotEmpty;
 import org.modelmapper.ModelMapper;
 
-import com.sage.loanapound.entity.LoanCustomer;
+import com.sage.loanapound.entity.LoanRequest;
 
 /**
- * The Class LoanCustomerDto.
+ * The Class LoanRequestDto.
  */
-public class LoanCustomerDto {
+public class LoanRequestDto {
 
 	/** The id. */
 	private int id;
 
 	/** The customer. */
-	@NotEmpty
 	private CustomerDto customer;
 
 	/** The loan. */
-	@NotEmpty
 	private LoanDto loan;
 
 	/** The amount. */
-	@NotEmpty
-	@Min(value=1)
 	private double amount;
 
 	/** The month. */
-	@NotEmpty
-	@Min(value=1)
 	private int months;
 
 	/** The start date. */
@@ -56,7 +47,7 @@ public class LoanCustomerDto {
 	/**
 	 * Instantiates a new loan customer dto.
 	 */
-	public LoanCustomerDto() {
+	public LoanRequestDto() {
 		customer = new CustomerDto();
 		loan = new LoanDto();
 		provider = new ProviderScoreDto();
@@ -278,7 +269,7 @@ public class LoanCustomerDto {
 	 */
 	@Override
 	public String toString() {
-		return "LoanCustomerDto [id=" + id + ", customer=" + customer + ", loan=" + loan + ", amount=" + amount
+		return "LoanRequestDto [id=" + id + ", customer=" + customer + ", loan=" + loan + ", amount=" + amount
 				+ ", months=" + months + ", startDate=" + startDate + ", endDate=" + endDate + ", status=" + status
 				+ ", isMailSend=" + isMailSend + ", score=" + score + ", provider=" + provider + "]";
 	}
@@ -286,9 +277,9 @@ public class LoanCustomerDto {
 	/**
 	 * To entity.
 	 *
-	 * @return the loan customer
+	 * @return the loan request
 	 */
-	public LoanCustomer toEntity() {
-		return new ModelMapper().map(this, LoanCustomer.class);
+	public LoanRequest toEntity() {
+		return new ModelMapper().map(this, LoanRequest.class);
 	}
 }

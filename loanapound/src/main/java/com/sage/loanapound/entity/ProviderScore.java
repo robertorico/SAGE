@@ -1,10 +1,21 @@
 package com.sage.loanapound.entity;
 
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.Hibernate;
+import org.modelmapper.ModelMapper;
 
 import com.sage.loanapound.dto.ProviderScoreDto;
 
@@ -12,14 +23,62 @@ import com.sage.loanapound.dto.ProviderScoreDto;
  * The Class ProviderScore.
  */
 @Entity
-@Table(name = "provider_score")
+@Table(name = "providerScore")
 public class ProviderScore {
 
-	/** The name. */
+	/** The id. */
 	@Id
-	@NotNull
-	@Column(name = "name", unique = true, nullable = false, length = 64)
+	@GeneratedValue
+	@Column(name = "id", unique = true, nullable = false)
+	private int id;
+
+	/** The name. */
+	@Column(name = "name", nullable = false, length = 64)
 	private String name;
+
+	/** The config provider. */
+	@OneToMany(mappedBy = "providerScore")
+	private Set<ConfigProvider> configProvider;
+
+	/** The criterias. */
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "configCriteria", joinColumns = @JoinColumn(name = "providerId"), inverseJoinColumns = @JoinColumn(name = "criteriaId"))
+	public List<Criteria> criterias;
+
+	/**
+	 * Instantiates a new provider score.
+	 */
+	public ProviderScore() {
+		Hibernate.initialize(criterias);
+	}
+
+	/**
+	 * Gets the config provider.
+	 *
+	 * @return the configProvider
+	 */
+	public Set<ConfigProvider> getConfigProvider() {
+		return configProvider;
+	}
+
+	/**
+	 * Sets the config provider.
+	 *
+	 * @param configProvider
+	 *            the configProvider to set
+	 */
+	public void setConfigProvider(Set<ConfigProvider> configProvider) {
+		this.configProvider = configProvider;
+	}
+
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
 
 	/**
 	 * Gets the name.
@@ -28,6 +87,16 @@ public class ProviderScore {
 	 */
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * Sets the id.
+	 *
+	 * @param id
+	 *            the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	/**
@@ -40,6 +109,25 @@ public class ProviderScore {
 		this.name = name;
 	}
 
+	/**
+	 * Gets the criterias.
+	 *
+	 * @return the criterias
+	 */
+	public List<Criteria> getCriterias() {
+		return criterias;
+	}
+
+	/**
+	 * Sets the criterias.
+	 *
+	 * @param criterias
+	 *            the criterias to set
+	 */
+	public void setCriterias(List<Criteria> criterias) {
+		this.criterias = criterias;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -47,7 +135,7 @@ public class ProviderScore {
 	 */
 	@Override
 	public String toString() {
-		return "ProviderScore [name=" + name + "]";
+		return "ProviderScore [id=" + id + ", name=" + name + "]";
 	}
 
 	/**
@@ -56,9 +144,6 @@ public class ProviderScore {
 	 * @return the provider score dto
 	 */
 	public ProviderScoreDto toDto() {
-		ProviderScoreDto dto = new ProviderScoreDto();
-		dto.setName(name);
-		return dto;
+		return new ModelMapper().map(this, ProviderScoreDto.class);
 	}
-
 }

@@ -2,10 +2,7 @@ package com.sage.loanapound.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -24,12 +21,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sage.loanapound.constant.ErrorConstants;
 import com.sage.loanapound.constant.ViewConstants;
 import com.sage.loanapound.dto.CustomerDto;
-import com.sage.loanapound.dto.LoanCustomerDto;
 import com.sage.loanapound.dto.LoanDto;
-import com.sage.loanapound.entity.Loan;
-import com.sage.loanapound.entity.LoanCustomer;
+import com.sage.loanapound.dto.LoanRequestDto;
+import com.sage.loanapound.entity.LoanRequest;
 import com.sage.loanapound.service.CustomerService;
-import com.sage.loanapound.service.LoanCustomerService;
+import com.sage.loanapound.service.LoanRequestService;
 import com.sage.loanapound.service.LoanService;
 import com.sage.loanapound.service.ScoreService;
 
@@ -63,8 +59,8 @@ public class LapController{
 	
 	/** The loan customer service. */
 	@Autowired
-	@Qualifier("loanCustomerService")
-	LoanCustomerService loanCustomerService;
+	@Qualifier("loanRequestService")
+	LoanRequestService loanRequestService;
 
 	
 	/*********************
@@ -77,15 +73,7 @@ public class LapController{
 	private static final Logger LOGGER = LoggerFactory.getLogger(LapController.class);	
 	
 	/** The loan customer dto. */
-	private LoanCustomerDto globalLoanCustomerDto;
-	
-	/** The list loan. */
-	private List<LoanDto> listLoan = new ArrayList<>();
-	
-	private Set<String> listTypeLoan = new HashSet<>();
-	
-	/** The int error*/
-	private int error;
+	private LoanRequestDto globalLoanRequestDto;
 	
 	
 	/*********************
@@ -95,97 +83,16 @@ public class LapController{
 	 *********************/
 	
 	/**
-	 * Show Form select loans.
-	 *
-	 * @return the model and view
-	 */
-	@GetMapping({"", "/"})	
-	public ModelAndView formLoans(){
-		LOGGER.info("Start - showLoans()" );
-		
-		//Initialize global dto
-		if(globalLoanCustomerDto == null)
-			globalLoanCustomerDto = new LoanCustomerDto();
-		
-		//Create list of loan, just one call to database
-		if(listLoan.isEmpty())
-			for(Loan entity : loanService.findAllByOrderByTypeAsc()){
-				listLoan.add(entity.toDto());
-				listTypeLoan.add(entity.getType());
-			}
-	
-		
-		
-		//Show list of loans
-		ModelAndView mav = new ModelAndView(ViewConstants.VIEW_FORM_SELECT_LOAN);
-		mav.addObject("loanCustomer", globalLoanCustomerDto);
-		mav.addObject("listLoans", listLoan);
-		mav.addObject("listTypeLoan", listTypeLoan);
-		mav.addObject("error", error);
-		
-		LOGGER.info("End - showLoans()");
-		return mav;
-	}
-	
-	
-	/**
-	 * Select loan.
-	 *
-	 * @param loanCustomer the loan customer dto
-	 * @return the string
-	 */
-	@PostMapping("/selectLoan")
-	public ModelAndView selectLoan(@ModelAttribute("loanCustomer") LoanCustomerDto loanCustomer){
-		LOGGER.info("Start - selectLoan() " + loanCustomer);	
-		
-		ModelAndView mav = new ModelAndView();
-		
-		//Save values in global
-		this.globalLoanCustomerDto = loanCustomer;
-		
-		//Validate loan selected
-		System.out.println("OOOOOOOOOOJO" + globalLoanCustomerDto.getLoan().getType());
-		if(globalLoanCustomerDto.getLoan().getId() == 0){
-			this.error = ErrorConstants.ERROR_LOAN_NOT_SELECTED;
-		}
-		else{
-			//Search and save the loan
-			globalLoanCustomerDto.setLoan(listLoan.stream().filter(
-					loan -> loan.getId() == globalLoanCustomerDto.getLoan().getId())
-					.collect(Collectors.toList()).get(0));
-			
-			//Validate the fields
-			if(globalLoanCustomerDto.getLoan().getAmountMin() <= globalLoanCustomerDto.getAmount() 
-					&& globalLoanCustomerDto.getLoan().getAmountMax() >= globalLoanCustomerDto.getAmount()
-					&& globalLoanCustomerDto.getLoan().getMonthMin() <= globalLoanCustomerDto.getMonths() 
-					&& globalLoanCustomerDto.getLoan().getMonthMax() >= globalLoanCustomerDto.getMonths()){
-				
-				mav.setViewName("redirect:/lap/formCustomer");
-				//Reset error variable
-				this.error = 0;
-				
-				LOGGER.info("End - selectLoan() - Result: " + this.globalLoanCustomerDto);
-				return mav;
-			}
-			else //Validation KO		
-				this.error = ErrorConstants.ERROR_NOT_VALIDATE;	
-		}
-		
-		//If any error return same page
-		mav.setViewName("redirect:/lap");
-		LOGGER.info("End - selectLoan() - Result = KO");
-		return mav;
-	}
-	
-	
-	/**
 	 * Show Form customer.
 	 *
 	 * @return the model and view
 	 */
-	@GetMapping("/formCustomer")
+	@GetMapping({"", "/"})	
 	public ModelAndView formCustomer(){
 		LOGGER.info("Start - formCustomer()");
+		
+		//Initialize global variable
+		globalLoanRequestDto = new LoanRequestDto();
 		
 		ModelAndView mav = new ModelAndView(ViewConstants.VIEW_FORM_CUSTOMER);
 		mav.addObject("customer", new CustomerDto());
@@ -205,16 +112,15 @@ public class LapController{
 	 */
 	@PostMapping("/addCustomer")
 	public ModelAndView addCustomer(@Valid @ModelAttribute("customer") CustomerDto customerDto, BindingResult bindingResult) throws CloneNotSupportedException{
-		LOGGER.info("Start - addCustomer() bindingResult " + bindingResult.getAllErrors());
+		LOGGER.info("Start - addCustomer()");
 		
 		ModelAndView mav= new ModelAndView(ViewConstants.VIEW_FORM_CUSTOMER);
 		
 		//Validate errors CustomerDto
 		if(bindingResult.hasErrors())
 			return mav;
-		else{			
-			
-			//Validate birthday customer
+		else{					
+			//Validate birthday customer JSR-310 not found with LocalTime
 			if(customerDto.getBirthday().isAfter(LocalDate.now())){
 				bindingResult.rejectValue("birthday", "error.date.future");
 				return mav;
@@ -226,20 +132,34 @@ public class LapController{
 				bindingResult.rejectValue("birthday", "error.birthday.dead");
 				return mav;
 			}
+			//Validate amount
+			if(customerDto.getAmount() <= 0l){
+				bindingResult.rejectValue("amount", "error.amount.negative");
+				return mav;
+			}
 			
 			//Validation OK
+			// Loan Configuration			
+			globalLoanRequestDto.setLoan(getLoanDtoDefault());
+			globalLoanRequestDto.setAmount(customerDto.getAmount());
+			
 			//Save customer in global variable
-			globalLoanCustomerDto.setCustomer(customerDto);
-			
+			globalLoanRequestDto.setCustomer(customerDto);
+					
 			//Set score according some rules
-			globalLoanCustomerDto = scoreService.setScore(globalLoanCustomerDto.toEntity()).toDto();
-			System.out.println(globalLoanCustomerDto);
+			try {
+				globalLoanRequestDto = scoreService.setScore(globalLoanRequestDto.toEntity()).toDto();
+			} catch (Exception e) {
+				LOGGER.error(e.getMessage());
+				globalLoanRequestDto.setStatus(ErrorConstants.ERROR_GETTING_SCORE);
+			}
+			System.out.println(globalLoanRequestDto);
 			
-			//save customer in table loanCustomer
-			customerService.add(globalLoanCustomerDto.getCustomer().toEntity());
-			loanCustomerService.add(globalLoanCustomerDto.toEntity());
+			//save datas in DB
+			customerService.add(globalLoanRequestDto.getCustomer().toEntity());
+			loanRequestService.add(globalLoanRequestDto.toEntity());
 			
-			//SHOW ALL CUSTOMERS AND SCORE
+			//Show customers
 			LOGGER.info("End - addCustomer() - Result OK");
 			return new ModelAndView("redirect:/lap/showAllCustomers");
 		}
@@ -254,17 +174,26 @@ public class LapController{
 	@GetMapping("/showAllCustomers")
 	public ModelAndView showAllCustomers(){
 		LOGGER.info("Start - showAllCustomers()");
-		//Restart global datas
-		globalLoanCustomerDto = null;
-		listLoan = new ArrayList<>(); 
 		
 		ModelAndView mav = new ModelAndView(ViewConstants.VIEW_SHOW_CUSTOMERS);
-		List<LoanCustomerDto> listLCDto = new ArrayList<>();
-		for(LoanCustomer entity : loanCustomerService.findAllByOrderByCustomerAscStatusAsc()){
-			listLCDto.add(entity.toDto());
+		
+		//get all loanRequest
+		List<LoanRequest> listEntity = loanRequestService.findAllByOrderByCustomerAscStatusAsc();
+		List<LoanRequestDto> listLRDto = new ArrayList<>();
+		
+		//Convert to dto object
+		for(LoanRequest entity : listEntity){
+			listLRDto.add(entity.toDto());
 		}
-		mav.addObject("listLoanCustomers", listLCDto);
+		
+		mav.addObject("listLoanRequest", listLRDto);
+		
 		LOGGER.info("End - showAllCustomers()");
 		return mav;
+	}
+	
+	//Get loan default
+	private LoanDto getLoanDtoDefault(){
+		return loanService.findAll().get(0).toDto();
 	}
 }

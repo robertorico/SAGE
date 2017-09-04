@@ -26,13 +26,13 @@ public class LoanService{
 	LoanDAOI loanDAO;
 	
 	/**
-	 * Find all by order by type asc.
+	 * Find all.
 	 *
 	 * @return the list
 	 */
-	public List<Loan> findAllByOrderByTypeAsc(){	
-		LOGGER.info("Calling to findAllByOrderByTypeAsc()");
-		return loanDAO.findAllByOrderByTypeAsc();	
+	public List<Loan> findAll(){	
+		LOGGER.info("Calling to findAll()");
+		return loanDAO.findAll();	
 	}
-	
+		
 }

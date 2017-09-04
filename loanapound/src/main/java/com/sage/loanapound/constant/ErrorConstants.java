@@ -1,19 +1,20 @@
-package com.sage.loanapound.constant;
+	package com.sage.loanapound.constant;
 
 /**
  * The Class ErrorConstants.
  */
 public final class ErrorConstants {
-	
-	/** The Constant ERROR_NOT_VALIDATE. */
-	public static final int ERROR_NOT_VALIDATE = 1;
-	
-	/** The Constant ERROR_LOAN_NOT_SELECTED. */
-	public static final int ERROR_LOAN_NOT_SELECTED = 2;
-	
-	/** The Constant ERROR_GETTING_SCORE. */
-	public static final String ERROR_GETTING_SCORE = "Error getting score";
-	
-	/** The Constant ERROR_CLONNING_OBJECT. */
+
+	public static final String ERROR_GETTING_SCORE = "Error getting the score";	
 	public static final String ERROR_CLONNING_OBJECT = "Error clonning object";
+	public static final String ERROR_PROVIDERS_NOT_CONFIGURATION = "Providers without configuration";
+	
+	public static final String ERROR_CALL_WS_SOAP = "Error calling WS SOAP";
+	public static final String ERROR_CALL_WS_REST = "Error calling WS REST";
+	
+	//VALUES NULL
+	public static final String ERROR_CUSTOMER_NULL = "Customer can not be null";
+	public static final String ERROR_PROVIDER_NULL = "Provider can not be null";
+	public static final String ERROR_LOAN_REQUEST_NULL = "LoanRequest can not be null";
+	
 }

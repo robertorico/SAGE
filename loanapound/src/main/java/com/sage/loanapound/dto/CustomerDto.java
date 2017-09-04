@@ -17,47 +17,61 @@ import com.sage.loanapound.entity.Customer;
  * The Class CustomerDto.
  */
 public class CustomerDto {
-	
+
 	/** The id. */
-	@NotEmpty @Length(max = 10)
+	@NotEmpty
+	@Length(max = 10)
 	private String id;
 
 	/** The name. */
-	@NotEmpty @Length(max = 32)
+	@NotEmpty
+	@Length(max = 45)
 	private String name;
 
 	/** The surname. */
-	@NotEmpty @Length(max = 32)
-	private String surname;
+	@NotEmpty
+	@Length(max = 45)
+	private String lastname;
 
 	/** The birthday. */
-	@NotNull @DateTimeFormat(pattern = "yyyy-MM-dd") 
+	@NotNull
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthday;
 
 	/** The email. */
-	@NotEmpty @Email
+	@NotEmpty
+	@Email
+	@Length(max = 128)
 	private String email;
 
 	/** The phone. */
-	@NotEmpty @Length(max = 16)	
+	@NotEmpty
+	@Length(max = 16)
 	@Pattern(regexp = "(\\+)?(\\s?\\d)*")
 	private String phone;
 
 	/** The country. */
-	@NotEmpty @Length(max = 16)
+	@NotEmpty
+	@Length(max = 20)
 	private String country;
 
 	/** The street. */
-	@NotEmpty @Length(max = 32)
+	@NotEmpty
+	@Length(max = 45)
 	private String street;
 
 	/** The number. */
-	@NotEmpty @Length(max = 5)
+	@NotEmpty
+	@Length(max = 6)
 	private String number;
 
 	/** The postalcode. */
-	@NotEmpty @Length(max = 8)
+	@NotEmpty
+	@Length(max = 8)
 	private String postalcode;
+
+	// Loan Configuration
+	private long amount;
 
 	/**
 	 * Instantiates a new customer dto.
@@ -77,7 +91,8 @@ public class CustomerDto {
 	/**
 	 * Sets the id.
 	 *
-	 * @param id            the idCard to set
+	 * @param id
+	 *            the idCard to set
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -95,7 +110,8 @@ public class CustomerDto {
 	/**
 	 * Sets the name.
 	 *
-	 * @param name            the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -106,17 +122,18 @@ public class CustomerDto {
 	 *
 	 * @return the surname
 	 */
-	public String getSurname() {
-		return surname;
+	public String getLastname() {
+		return lastname;
 	}
 
 	/**
 	 * Sets the surname.
 	 *
-	 * @param surname            the surname to set
+	 * @param surname
+	 *            the surname to set
 	 */
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
 	/**
@@ -131,7 +148,8 @@ public class CustomerDto {
 	/**
 	 * Sets the birthday.
 	 *
-	 * @param birthday            the birthday to set
+	 * @param birthday
+	 *            the birthday to set
 	 */
 	public void setBirthday(LocalDate birthday) {
 		this.birthday = birthday;
@@ -149,7 +167,8 @@ public class CustomerDto {
 	/**
 	 * Sets the email.
 	 *
-	 * @param email            the email to set
+	 * @param email
+	 *            the email to set
 	 */
 	public void setEmail(String email) {
 		this.email = email;
@@ -167,7 +186,8 @@ public class CustomerDto {
 	/**
 	 * Sets the phone.
 	 *
-	 * @param phone            the phone to set
+	 * @param phone
+	 *            the phone to set
 	 */
 	public void setPhone(String phone) {
 		this.phone = phone;
@@ -185,7 +205,8 @@ public class CustomerDto {
 	/**
 	 * Sets the country.
 	 *
-	 * @param country            the country to set
+	 * @param country
+	 *            the country to set
 	 */
 	public void setCountry(String country) {
 		this.country = country;
@@ -203,7 +224,8 @@ public class CustomerDto {
 	/**
 	 * Sets the street.
 	 *
-	 * @param street            the street to set
+	 * @param street
+	 *            the street to set
 	 */
 	public void setStreet(String street) {
 		this.street = street;
@@ -221,7 +243,8 @@ public class CustomerDto {
 	/**
 	 * Sets the number.
 	 *
-	 * @param number            the number to set
+	 * @param number
+	 *            the number to set
 	 */
 	public void setNumber(String number) {
 		this.number = number;
@@ -239,10 +262,26 @@ public class CustomerDto {
 	/**
 	 * Sets the postalcode.
 	 *
-	 * @param postalCode            the postalCode to set
+	 * @param postalCode
+	 *            the postalCode to set
 	 */
 	public void setPostalcode(String postalCode) {
 		this.postalcode = postalCode;
+	}
+
+	/**
+	 * @return the amount
+	 */
+	public long getAmount() {
+		return amount;
+	}
+
+	/**
+	 * @param amount
+	 *            the amount to set
+	 */
+	public void setAmount(long amount) {
+		this.amount = amount;
 	}
 
 	/*
@@ -252,17 +291,17 @@ public class CustomerDto {
 	 */
 	@Override
 	public String toString() {
-		return "CustomerDto [id=" + id + ", name=" + name + ", surname=" + surname + ", birthday=" + birthday
+		return "CustomerDto [id=" + id + ", name=" + name + ", lastname=" + lastname + ", birthday=" + birthday
 				+ ", email=" + email + ", phone=" + phone + ", country=" + country + ", street=" + street + ", number="
 				+ number + ", postalcode=" + postalcode + "]";
 	}
-	
+
 	/**
 	 * To entity.
 	 *
 	 * @return the customer
 	 */
-	public Customer toEntity(){
+	public Customer toEntity() {
 		return new ModelMapper().map(this, Customer.class);
 	}
 }

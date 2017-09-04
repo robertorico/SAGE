@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.sage.loanapound.dao.CustomerDAOI;
 import com.sage.loanapound.entity.Customer;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class CustomerService.
  */

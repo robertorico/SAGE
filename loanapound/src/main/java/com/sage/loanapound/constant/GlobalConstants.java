@@ -3,24 +3,12 @@ package com.sage.loanapound.constant;
 /**
  * The Class GlobalConstants.
  */
-public final class GlobalConstants {
-	//Values to approved and rejected loans
+public class GlobalConstants {
 	
-	/** The loan approved min. */
-	public static final int LOAN_APPROVED_MIN= 85;
+	//PROVIDERS SCORE
+	/** The Constant PROVIDER1. */
+	public static final String PROVIDER1 = "provider1";
 	
-	/** The loan rejected max. */
-	public static final int LOAN_REJECTED_MAX = 50 ;
-	
-	
-	//Status loan
-	
-	/** The approved. */
-	public static final String APPROVED = "Approved";
-	
-	/** The rejected. */
-	public static final String REJECTED = "Rejected" ;
-	
-	/** The pending. */
-	public static final String PENDING = "Pending";
+	/** The Constant PROVIDER2. */
+	public static final String PROVIDER2 = "provider2";
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.sage.loanapound.entity.ProviderScore;
 
 /**
- * The Interface LoanCustomerDAOI.
+ * The JPA Interface providerScoreDAOI.
  */
 @Repository("providerScoreDAOI")
 public interface ProviderScoreDAOI extends JpaRepository<ProviderScore, Serializable>{

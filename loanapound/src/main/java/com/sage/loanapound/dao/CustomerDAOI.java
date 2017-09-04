@@ -8,9 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.sage.loanapound.entity.Customer;
 
 /**
- * The Interface CustomerDAOI.
+ * The JPA Interface CustomerDAOI.
  */
 @Repository("customerDAOI")
-public interface CustomerDAOI extends JpaRepository<Customer, Serializable>{
-
-}
+public interface CustomerDAOI extends JpaRepository<Customer, Serializable>{}

@@ -2,10 +2,12 @@ package com.sage.loanapound.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.modelmapper.ModelMapper;
 
@@ -25,38 +27,43 @@ public class Loan {
 	private int id;
 
 	/** The type. */
-	@NotNull
-	@Column(name = "type", nullable = false)
-	private String type;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "typeLoan", nullable = false)
+	private TypeLoan typeLoan;
 
 	/** The amount min. */
-	@NotNull
-	@Column(name = "amount_min", nullable = false, precision = 2)
-	private double amountMin;
+	@Column(name = "minAmount", nullable = false, precision = 2)
+	private double minAmount;
 
 	/** The amount max. */
-	@NotNull
-	@Column(name = "amount_max", nullable = false, precision = 2)
-	private double amountMax;
+	@Column(name = "maxAmount", nullable = false, precision = 2)
+	private double maxAmount;
 
 	/** The rate. */
-	@NotNull
 	@Column(name = "rate", nullable = false, precision = 2)
 	private double rate;
 
 	/** The month min. */
-	@NotNull
-	@Column(name = "month_min", nullable = false)
-	private int monthMin;
+	@Column(name = "minMonth", nullable = false)
+	private int minMonth;
 
 	/** The month max. */
-	@NotNull
-	@Column(name = "month_max", nullable = false)
-	private int monthMax;
+	@Column(name = "maxMonth", nullable = false)
+	private int maxMonth;
+
+	/** The provider. */
+	@Column(name = "provider", nullable = false, length = 64)
+	private String provider;
+
+	/** The amount min. */
+	@Column(name = "scoreApproved", nullable = false)
+	private int scoreApproved;
+
+	/** The amount max. */
+	@Column(name = "scoreRejected", nullable = false)
+	private int scoreRejected;
 
 	/**
-	 * Gets the id.
-	 *
 	 * @return the id
 	 */
 	public int getId() {
@@ -64,8 +71,55 @@ public class Loan {
 	}
 
 	/**
-	 * Sets the id.
-	 *
+	 * @return the typeLoan
+	 */
+	public TypeLoan getTypeLoan() {
+		return typeLoan;
+	}
+
+	/**
+	 * @return the minAmount
+	 */
+	public double getMinAmount() {
+		return minAmount;
+	}
+
+	/**
+	 * @return the maxAmount
+	 */
+	public double getMaxAmount() {
+		return maxAmount;
+	}
+
+	/**
+	 * @return the rate
+	 */
+	public double getRate() {
+		return rate;
+	}
+
+	/**
+	 * @return the minMonth
+	 */
+	public int getMinMonth() {
+		return minMonth;
+	}
+
+	/**
+	 * @return the maxMonth
+	 */
+	public int getMaxMonth() {
+		return maxMonth;
+	}
+
+	/**
+	 * @return the provider
+	 */
+	public String getProvider() {
+		return provider;
+	}
+
+	/**
 	 * @param id
 	 *            the id to set
 	 */
@@ -74,74 +128,30 @@ public class Loan {
 	}
 
 	/**
-	 * Gets the type.
-	 *
-	 * @return the type
+	 * @param typeLoan
+	 *            the typeLoan to set
 	 */
-	public String getType() {
-		return type;
+	public void setTypeLoan(TypeLoan typeLoan) {
+		this.typeLoan = typeLoan;
 	}
 
 	/**
-	 * Sets the type.
-	 *
-	 * @param type
-	 *            the type to set
+	 * @param minAmount
+	 *            the minAmount to set
 	 */
-	public void setType(String type) {
-		this.type = type;
+	public void setMinAmount(double minAmount) {
+		this.minAmount = minAmount;
 	}
 
 	/**
-	 * Gets the amount min.
-	 *
-	 * @return the amountMin
+	 * @param maxAmount
+	 *            the maxAmount to set
 	 */
-	public double getAmountMin() {
-		return amountMin;
+	public void setMaxAmount(double maxAmount) {
+		this.maxAmount = maxAmount;
 	}
 
 	/**
-	 * Sets the amount min.
-	 *
-	 * @param amountMin
-	 *            the amountMin to set
-	 */
-	public void setAmountMin(double amountMin) {
-		this.amountMin = amountMin;
-	}
-
-	/**
-	 * Gets the amount max.
-	 *
-	 * @return the amountMax
-	 */
-	public double getAmountMax() {
-		return amountMax;
-	}
-
-	/**
-	 * Sets the amount max.
-	 *
-	 * @param amountMax
-	 *            the amountMax to set
-	 */
-	public void setAmountMax(double amountMax) {
-		this.amountMax = amountMax;
-	}
-
-	/**
-	 * Gets the rate.
-	 *
-	 * @return the rate
-	 */
-	public double getRate() {
-		return rate;
-	}
-
-	/**
-	 * Sets the rate.
-	 *
 	 * @param rate
 	 *            the rate to set
 	 */
@@ -150,41 +160,57 @@ public class Loan {
 	}
 
 	/**
-	 * Gets the month min.
-	 *
-	 * @return the monthMin
+	 * @param minMonth
+	 *            the minMonth to set
 	 */
-	public int getMonthMin() {
-		return monthMin;
+	public void setMinMonth(int minMonth) {
+		this.minMonth = minMonth;
 	}
 
 	/**
-	 * Sets the month min.
-	 *
-	 * @param monthMin
-	 *            the monthMin to set
+	 * @param maxMonth
+	 *            the maxMonth to set
 	 */
-	public void setMonthMin(int monthMin) {
-		this.monthMin = monthMin;
+	public void setMaxMonth(int maxMonth) {
+		this.maxMonth = maxMonth;
 	}
 
 	/**
-	 * Gets the month max.
-	 *
-	 * @return the monthMax
+	 * @param provider
+	 *            the provider to set
 	 */
-	public int getMonthMax() {
-		return monthMax;
+	public void setProvider(String provider) {
+		this.provider = provider;
 	}
 
 	/**
-	 * Sets the month max.
-	 *
-	 * @param monthMax
-	 *            the monthMax to set
+	 * @return the scoreApproved
 	 */
-	public void setMonthMax(int monthMax) {
-		this.monthMax = monthMax;
+	public int getScoreApproved() {
+		return scoreApproved;
+	}
+
+	/**
+	 * @return the scoreRejected
+	 */
+	public int getScoreRejected() {
+		return scoreRejected;
+	}
+
+	/**
+	 * @param scoreApproved
+	 *            the scoreApproved to set
+	 */
+	public void setScoreApproved(int scoreApproved) {
+		this.scoreApproved = scoreApproved;
+	}
+
+	/**
+	 * @param scoreRejected
+	 *            the scoreRejected to set
+	 */
+	public void setScoreRejected(int scoreRejected) {
+		this.scoreRejected = scoreRejected;
 	}
 
 	/*
@@ -194,8 +220,9 @@ public class Loan {
 	 */
 	@Override
 	public String toString() {
-		return "LoanEntity [id=" + id + ", type=" + type + ", amountMin=" + amountMin + ", amountMax=" + amountMax
-				+ ", rate=" + rate + ", monthMin=" + monthMin + ", monthMax=" + monthMax + "]";
+		return "Loan [id=" + id + ", typeLoan=" + typeLoan + ", minAmount=" + minAmount + ", maxAmount=" + maxAmount
+				+ ", rate=" + rate + ", minMonth=" + minMonth + ", maxMonth=" + maxMonth + ", provider=" + provider
+				+ ", scoreApproved=" + scoreApproved + ", scoreRejected=" + scoreRejected + "]";
 	}
 
 	/**
@@ -206,5 +233,4 @@ public class Loan {
 	public LoanDto toDto() {
 		return new ModelMapper().map(this, LoanDto.class);
 	}
-
 }

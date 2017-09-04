@@ -26,29 +26,26 @@
 					<th>Address</th>
 					<th>Country</th>
 					<th>Postal Code</th>		
-					<th>Loan Type</th>	
 					<th>Amount</th>		
-					<th>Months</th>	
 					<th>Provider</th>
 					<th>Score</th>
 					<th>Status</th>												
 				</tr>
 				
 			</thead>
-			<tbody th:each="llc : ${listLoanCustomers}">
+			<tbody th:each="llc : ${listLoanRequest}">
 				<tr>
 					<td th:text="${llc.customer.id}"></td>
-					<td><span th:text="${llc.customer.name}"></span>  <span th:text="${llc.customer.surname}"></span></td>
+					<td><span th:text="${llc.customer.name}"></span>  <span th:text="${llc.customer.lastname}"></span></td>
 					<td th:text="${llc.customer.birthday}"></td>
 					<td th:text="${llc.customer.email}"></td>
 					<td th:text="${llc.customer.phone}"></td>
 					<td><span th:text="${llc.customer.number}"></span>  <span th:text="${llc.customer.street}"></span></td>
 					<td th:text="${llc.customer.country}"></td>
 					<td th:text="${llc.customer.postalcode}"></td>
-					<td th:text="${llc.loan.type}"></td>
 					<td th:text="${llc.amount}"></td>
-					<td th:text="${llc.months}"></td>
-					<td th:text="${llc.provider.name}"></td>
+					<td th:if="${llc.provider} != null" th:text="${llc.provider.name}"></td>
+					<td th:if="${llc.provider} == null" ></td>
 					<td th:text="${llc.score}"></td>
 					<td th:text="${llc.status}"></td>				
 				</tr>
